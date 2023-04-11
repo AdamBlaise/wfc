@@ -1,11 +1,12 @@
 package DTOs;
 
 public class LessonResponse {
+    public Boolean Successful;
     public String Message;
-    public Boolean Success;
 
-    public LessonResponse(String message, Boolean success){
+    public LessonResponse(String message, Boolean successful)
+    {
         this.Message = message;
-        this.Success = success;
+        this.Successful = successful;
     }
 }

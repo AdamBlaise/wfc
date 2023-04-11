@@ -65,21 +65,6 @@ public class LessonService {
         };
     }
 
-    public LessonResponse BookLesson(int id)
-    {
-        var lesson = MockData.TimeTable().stream().filter(t -> t.Id == id).collect(Collectors.toList());
-        if (lesson  == null || lesson.isEmpty()) {
-
-            return new LessonResponse("Invalid id selected", false);
-        }
-        var bookedspaces = lesson.get(1).BookedSpaces;
-        if(bookedspaces == 5){
-            return  new LessonResponse("This lesson is already filled up", false);
-        }
-        lesson.get(1).BookedSpaces = bookedspaces - 1;
-        return  new LessonResponse("Lesson booked successfully", true);
-    }
-
     public LessonResponse CancelLesson(int id)
     {
         return new LessonResponse("Lesson cancelled successfully", true);
