@@ -6,7 +6,7 @@ public class Customer {
     public String Phone;
     public String Email;
 
-    Customer(String name, int id, String phone, String email)
+    public Customer(String name, int id, String phone, String email)
     {
         this.Name = name;
         this.Id = id;

@@ -9,11 +9,12 @@ public class FitnessClass {
     public int FitWeek;
     public int BookedSpaces;
 
-    public FitnessClass(int Id, LessonType lessonType, models.FitDay fitDay, int fitWeek, int bookedSpaces) {
+    public FitnessClass(int id, LessonType lessonType, models.FitDay fitDay, int fitWeek, int bookedSpaces) {
         this.FitWeek = fitWeek;
         this.FitDay = fitDay;
         this.Lesson = lessonType;
         this.BookedSpaces = bookedSpaces;
+        this.Id = id;
     }
 }
 
