@@ -1,14 +1,18 @@
 package models;
 
+import java.util.List;
+
 public class CustomerLessons {
+    public int Id;
     public int LessonId;
     public int CustomerId;
-    public Boolean Attended;
+    public AttendanceStatus Status;
 
-    public CustomerLessons(int lessonId, int customerId, Boolean attended)
+    public CustomerLessons(int id, int lessonId, int customerId, AttendanceStatus status)
     {
+        this.Id = id;
         this.LessonId = lessonId;
         this.CustomerId = customerId;
-        this.Attended = attended;
+        this.Status = status;
     }
 }

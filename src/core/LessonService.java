@@ -1,20 +1,12 @@
 package core;
 
+import models.*;
 
-import DTOs.LessonResponse;
-import models.CustomerLessons;
-import models.FitnessClass;
-import models.LessonType;
-import models.MockData;
-
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class LessonService {
-
     public static void GetTimeTable(){
         System.out.println("Id \t Week \t Day \t Activity \t Price \t Available Spaces");
         List<FitnessClass> lessons = MockData.TimeTable();
@@ -24,7 +16,6 @@ public class LessonService {
             int availableSpaces = 5 - lesson.BookedSpaces;
             System.out.println(lesson.Id + " \t " + lesson.FitWeek + " \t " + lesson.FitDay + " \t " + lesson.Lesson.Name + " \t " + lesson.Lesson.Price + " \t " + availableSpaces );
         };
-
         System.out.println("99.\tBack to Menu");
     }
 
@@ -36,7 +27,6 @@ public class LessonService {
             LessonType lessonType = i.next();
             System.out.println(lessonType.Name + " \t \t " + lessonType.Price );
         };
-
         System.out.println("99.\tBack to Menu");
     }
 
@@ -45,12 +35,12 @@ public class LessonService {
         List<FitnessClass> lessons = MockData.TimeTable().stream().filter(tt -> tt.FitDay.name().equalsIgnoreCase(fitDay)).collect(Collectors.toList());
         Iterator<FitnessClass> i = lessons.iterator();
         System.out.println("lessons iterator has next: "+ i.hasNext());
-        while(i.hasNext()){
+        while(i.hasNext())
+        {
             FitnessClass lesson = i.next();
             int availableSpaces = 5 - lesson.BookedSpaces;
             System.out.println(lesson.Id + " \t " + lesson.FitWeek + " \t " + lesson.FitDay + " \t " + lesson.Lesson.Name + " \t " + lesson.Lesson.Price + " \t " + availableSpaces );
         };
-
         System.out.println("99.\tBack to Menu");
     }
 
@@ -65,18 +55,21 @@ public class LessonService {
         };
     }
 
-    public LessonResponse CancelLesson(int id)
+    public static FitnessClass GetLessonById(int id)
     {
-        return new LessonResponse("Lesson cancelled successfully", true);
+        var fitnessClass = MockData.TimeTable().stream().filter(l -> l.Id == id).findFirst().get();
+        return  fitnessClass;
     }
 
-    public List<CustomerLessons> GetCustomerLesson(){
-        List<CustomerLessons> customerLessons = new ArrayList() {{
-            add(new CustomerLessons(MockData.TimeTable().get(0).Id, MockData.Customers().get(0).Id, false));
-            add(new CustomerLessons(MockData.TimeTable().get(1).Id, MockData.Customers().get(0).Id, false));
-        }};
+    public static void RateLesson(List<LessonRate> lessonRates, int lessonId, int customerId, String rateLevel)
+    {
+        var rateLev = Enum.valueOf(RateLevel.class, rateLevel);
+        lessonRates.add(new LessonRate(lessonId, rateLev, customerId));
+    }
 
-        return customerLessons;
+    public static void AddReviewForLesson(List<LessonReview> lessonReviews, int lessonId, int customerId, String review)
+    {
+        lessonReviews.add(new LessonReview(review, lessonId, customerId));
     }
 }
 

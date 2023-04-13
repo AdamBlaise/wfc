@@ -29,6 +29,7 @@ public class MockData {
     public static List<Customer> Customers(){
         List<Customer> customers = new ArrayList<Customer>();
         customers.add(new Customer("Chisom Nwike", 1, "07765642937", "oge.nwike@gmail.com" ));
+        customers.add(new Customer("Adam Ayide", 2, "07765642957", "adam.ayide@gmail.com" ));
         return customers;
     }
 }

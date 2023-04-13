@@ -1,14 +1,15 @@
-import models.CustomerLessons;
-import models.FitnessClass;
-import models.MockData;
+import core.CustomerService;
+import models.*;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-import static core.BookingService.BookLesson;
+import static core.BookingService.*;
+import static core.CustomerService.GetCustomerByEmail;
+import static core.CustomerService.GetCustomers;
 import static core.LessonService.*;
 
 // Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
@@ -21,6 +22,8 @@ public class Main {
         ShowMenu(true);
 
         List<CustomerLessons> customerLessonsList = new ArrayList<>();
+        List<LessonReview> lessonReviews = new ArrayList<>();
+        List<LessonRate> lessonRates = new ArrayList<>();
 
         do{
             ch = s.nextInt();
@@ -41,7 +44,7 @@ public class Main {
                 GetFitnessTypes();
                 break;
             case 4:
-                //s.nextLine();
+                s.nextLine();
                 System.out.printf("Enter fitness type in full: ");
                 String fitnessType = s.nextLine();
                 GetTimeTableByLessonType(fitnessType);
@@ -78,6 +81,64 @@ public class Main {
                 }
                 System.out.print("99: Go back to main menu: ");
                 break;
+            case 7:
+            case 8:
+                GetCustomers();
+                s.nextLine();
+                System.out.print("Enter Email of customer whose booking you'd like to cancel:  ");
+                var email = s.nextLine();
+                GetCustomerBookings(customerLessonsList, email, false);
+                System.out.print("Enter Lesson Id you'd like to cancel: ");
+                int lesId = s.nextInt();
+                CancelBooking(customerLessonsList, lesId);
+                System.out.print("99: Go back to main menu: ");
+                break;
+            case 9:
+                s.nextLine();
+                System.out.print("Enter Customer Email: ");
+                var em = s.nextLine();
+                var customerId = GetCustomerByEmail(em).Id;
+                GetCustomerBookings(customerLessonsList, em, false);
+                System.out.print("Select Lesson Id to review: ");
+                var lessonToReview = s.nextInt();
+                s.nextLine();
+                var les = GetLessonById(lessonToReview).Id;
+                var reviewMessage = s.nextLine();
+                AddReviewForLesson(lessonReviews, les, customerId, reviewMessage);
+                System.out.print("Review Added Successfully");
+                System.out.print("Would you like to rate the lesson? (y/n)");
+                if(s.nextLine() == "y"){
+                    System.out.println(java.util.Arrays.asList(RateLevel.values()));
+                    System.out.println("Enter rate in full: ");
+                    var rate = s.nextLine();
+                    RateLesson(lessonRates, les, customerId, rate.toUpperCase());
+                }
+                break;
+            case 10:
+                s.nextLine();
+                System.out.print("Enter Customer Email: ");
+                var customersEmail = s.nextLine();
+                var customersId = GetCustomerByEmail(customersEmail).Id;
+                GetCustomerBookings(customerLessonsList, customersEmail, false);
+                System.out.print("Select Lesson Id to review: ");
+                var lessonToRate = s.nextInt();
+                s.nextLine();
+
+                System.out.println(java.util.Arrays.asList(RateLevel.values()));
+                System.out.println("Enter rate in full: ");
+                var rate = s.nextLine();
+                RateLesson(lessonRates, lessonToRate, customersId, rate.toUpperCase());
+                System.out.print("Rating Added Successfully");
+                System.out.print("Would you like to review the lesson? (y/n)");
+                if(s.nextLine() == "y")
+                {
+                    var message = s.nextLine();
+                    AddReviewForLesson(lessonReviews, lessonToRate, customersId, message);
+                }
+                break;
+            case 14:
+                GetCustomers();
+                break;
             case 99:
                 ShowMenu(true);
             default:
@@ -102,6 +163,7 @@ public class Main {
         System.out.println("11.\tView Lesson Report and Rating");
         System.out.println("12.\tView Income Report");
         System.out.println("13.\tView Champion Fitness Type");
+        System.out.println("14. \tView Customers");
         if(!isMain)
             System.out.println("99.\tBack to Menu");
 
